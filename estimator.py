@@ -1,5 +1,5 @@
 from service import *
-
+from tqdm.auto import tqdm
 def verificaCombinacoes():
     print("Iniciando analise")
     data = localFetch()
@@ -7,20 +7,21 @@ def verificaCombinacoes():
 
 def verifica(data):
     freqComb = {
-        "quatro":{
-            "jogo" : [],
-            "freq" : 0
-        },
-        "cinco":{
-            "jogo" : [],
-            "freq" : 0 
-        },
-        "seis":{
-            "jogo" : [],
-            "freq" : 0
-        }
+        "quatro":[
+            {"jogo" : [],
+            "freq" : 0}
+        ],
+        "cinco":[
+            {"jogo" : [],
+            "freq" : 0 }
+        ],
+        "seis":[
+            {"jogo" : [],
+            "freq" : 0}
+        ]
     }
-    for row in data:
+    for row in tqdm(data):
+        print(" ",end='\r')
         for i in range(0,6): 
             for j in range(i+1,6):
                 aux = []
@@ -35,7 +36,8 @@ def verifica(data):
                 #print(aux)
                 freqComb = verificaInclusaoNoHistorico(data,aux,freqComb,'quatro')
     
-    for row in data:
+    for row in tqdm(data):
+        print(" ",end='\r')
         for i in range(0,6): 
             aux = []
             #print(str(i) + " "+str(j))
@@ -48,7 +50,8 @@ def verifica(data):
             #print(aux)
             freqComb = verificaInclusaoNoHistorico(data,aux,freqComb,'cinco')
     
-    for row in data: 
+    for row in tqdm(data):
+        print(" ",end='\r')
         aux = []
         #print(str(i) + " "+str(j))
     
@@ -74,9 +77,11 @@ def verificaInclusaoNoHistorico(data,jogo,freqComb,ganho):
             })
     #print(result)
     if(result != []):
-        if(len(result)>freqComb[ganho]['freq']):
-            freqComb[ganho] = {
+        if(len(result)>=freqComb[ganho][0]['freq']):
+            if(len(result)!=freqComb[ganho][0]['freq']):
+                freqComb[ganho] = []
+            freqComb[ganho].append({
                 "jogo": jogo,
                 "freq" : len(result)
-            }
+            })
     return freqComb
