@@ -78,10 +78,13 @@ def verificaInclusaoNoHistorico(data,jogo,freqComb,ganho):
     #print(result)
     if(result != []):
         if(len(result)>=freqComb[ganho][0]['freq']):
-            if(len(result)!=freqComb[ganho][0]['freq']):
-                freqComb[ganho] = []
-            freqComb[ganho].append({
+            comb = {
                 "jogo": jogo,
                 "freq" : len(result)
-            })
+            }
+            if(len(result)!=freqComb[ganho][0]['freq']):
+                freqComb[ganho] = []
+            
+            if comb not in freqComb[ganho]:
+                freqComb[ganho].append(comb)
     return freqComb
