@@ -4,6 +4,7 @@ import csv
 from bokeh.plotting import figure, output_file, show
 import os
 from secrets import TOKEN
+from tqdm import tqdm
 
 def verificaAcertos():
     jogo = []
@@ -38,8 +39,8 @@ def apiFetch():
     ultimo =int( input("Qual o numero do ultimo jogo: "))
     print("Buscando os resultados do jogo " + str(primeiro) + " ao " + str(ultimo) )
     resultados = []
-    for i in range(primeiro, ultimo+1):
-        print("Jogo "+ str(i))
+    for i in tqdm(range(primeiro, ultimo+1)):
+        #print("Jogo "+ str(i))
         r = requests.get("https://apiloterias.com.br/app/resultado?loteria=megasena&token="+TOKEN+"&concurso=" + str(i),timeout=None)
         try:
             resp = json.loads(r.content)
